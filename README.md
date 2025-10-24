@@ -1,6 +1,14 @@
 Task : Implementing a complete automated workflow that covers version control, containerization, 
 continuous integration, continuous delivery, and orchestration.
 
+DOCKER COMPLETE WORKFLOW
+
+![flow](/screenshots/docker.jpg)
+
+DIRECTORY STRUCTURE :
+![dorectory](/screenshots/directory.png)
+
+
 Step followed :
 
 STEP - 1 : application
@@ -62,3 +70,23 @@ STEP - 4 : Jenkins (Continuous Integration & Delivery)
 -Each code push triggers an automatic CI/CD workflow.
 
 ![alt text](/screenshots/jenkinspipeline.png)
+
+STEP - 5 : Kubernetes (Container Orchestration)
+
+Created Kubernetes manifests under the k8s/ directory:
+
+deployment.yaml — defines the application deployment and replicas.
+
+service.yaml — exposes the app through a service.
+
+Commands :
+kubectl apply -f k8s/deployment.yaml
+kubectl apply -f k8s/service.yaml
+kubectl get pods
+kubectl get svc
+
+
+This deployed the app container (from Docker Hub) into a Kubernetes cluster.
+![kube image](/screenshots/kube.png)
+
+1[complete](/screenshots/complete.png)
