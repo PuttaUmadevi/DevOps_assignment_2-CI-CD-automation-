@@ -92,4 +92,4 @@ kubectl get svc
 This deployed the app container (from Docker Hub) into a Kubernetes cluster.
 ![kube image](/screenshots/kube.png)
 
-![complete](/screenshots/complete.png)
+![complete](/screenshots/frontend.png)
