@@ -3,22 +3,27 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'puttaumadevi/ticket-system'
-        DOCKER_CREDENTIALS = 'Docker-hub-credentials'
+        DOCKER_CREDENTIALS = credentials('docker-hub-credentials')   //created in jenkins
         APP_PORT = '5000'
     }
 
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'master', url: 'https://github.com/PuttaUmadevi/DevOps_assignment_2-CI-CD-automation-.git'
+                git branch: 'main', 
+                    url: 'https://github.com/PuttaUmadevi/DevOps_assignment_2-CI-CD-automation-.git'
+                bat 'echo  Code checked out successfully.'
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 script {
-                    echo "🚀 Building Docker image: ${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
-                    dockerImage = docker.build("${DOCKER_IMAGE}:${env.BUILD_NUMBER}")
+                    bat """
+                    echo 🚀 Building Docker image: ${DOCKER_IMAGE}:${env.BUILD_NUMBER}
+                    docker build -t ${DOCKER_IMAGE}:${env.BUILD_NUMBER} .
+                    docker tag ${DOCKER_IMAGE}:${env.BUILD_NUMBER} ${DOCKER_IMAGE}:latest
+                    """
                 }
             }
         }
@@ -26,21 +31,25 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 script {
-                    docker.withRegistry('', "${DOCKER_CREDENTIALS}") {
-                        dockerImage.push("${env.BUILD_NUMBER}")
-                        dockerImage.push('latest')
-                    }
+                    bat """
+                    docker login -u ${DOCKER_CREDENTIALS_USR} -p ${DOCKER_CREDENTIALS_PSW}
+                    docker push ${DOCKER_IMAGE}:${env.BUILD_NUMBER}
+                    docker push ${DOCKER_IMAGE}:latest
+                    docker logout
+                    """
                 }
             }
         }
 
-        stage('Deploy Locally') {
+        stage('Deploy Locally (Optional)') {
             steps {
                 script {
-                    sh 'docker stop ticket-system-app || true'
-                    sh 'docker rm ticket-system-app || true'
-                    sh "docker run -d -p ${APP_PORT}:${APP_PORT} --name ticket-system-app ${DOCKER_IMAGE}:${env.BUILD_NUMBER}"
-                    echo "✅ App deployed locally at: http://localhost:${APP_PORT}"
+                    bat """
+                    docker stop ticket-system-app || echo Container not running
+                    docker rm ticket-system-app || echo Container not found
+                    docker run -d -p ${APP_PORT}:${APP_PORT} --name ticket-system-app ${DOCKER_IMAGE}:${env.BUILD_NUMBER}
+                    echo  Application deployed locally at http://localhost:${APP_PORT}
+                    """
                 }
             }
         }
@@ -48,10 +57,10 @@ pipeline {
 
     post {
         success {
-            echo "🎉 Pipeline succeeded! Image pushed and running."
+            bat 'echo  Jenkins Pipeline succeeded! Image built, pushed, and deployed.'
         }
         failure {
-            echo "❌ Pipeline failed — check logs."
+            bat 'echo  Jenkins Pipeline failed! Check the console output for errors.'
         }
     }
 }

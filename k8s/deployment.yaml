@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ticket-system-app
+  labels:
+    app: ticket-system-app
+    version: "1.0"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ticket-system-app
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: ticket-system-app
+    spec:
+      containers:
+      - name: ticket-system-container
+        image: puttaumadevi/ticket-system:latest   # ✅ your Docker image
+        ports:
+        - containerPort: 5000                      # ✅ Flask port
+        env:
+        - name: PORT
+          value: "5000"
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 1
+
+---
+# ✅ Horizontal Pod Autoscaler
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: ticket-system-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ticket-system-app
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
