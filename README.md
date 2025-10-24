@@ -1,11 +1,14 @@
 Task : Implementing a complete automated workflow that covers version control, containerization, 
 continuous integration, continuous delivery, and orchestration.
 
-DOCKER COMPLETE WORKFLOW
+DOCKER COMPLETE WORKFLOW:
+
 
 ![flow](/screenshots/docker.jpg)
 
 DIRECTORY STRUCTURE :
+
+
 ![dorectory](/screenshots/directory.png)
 
 
