@@ -6,7 +6,7 @@ Step followed :
 STEP - 1 : application
 
 Built a simple application for the ticket booking system using HTML,CSS,JavaScript and a simple backend using python-flask
-![frontend web page screenshot](frontend.png)
+![frontend web page screenshot](/screenshots/frontend.png)
 
 STEP - 2 : Dockerize
 
@@ -19,8 +19,8 @@ Commands :
 > docker run -d -p 8081:5000 image_name
 Now open localhost:8081
 
-![alt text](docker.png)
-![alt text](docker2.png)
+![alt text](/screenshots/docker.png)
+![alt text](/screenshots/docker2.png)
 
 
 Now Pushing the image to docker hub
@@ -29,7 +29,7 @@ Now Pushing the image to docker hub
 
 > docker push <your-dockerhub-username>/<image-name>:<tag>
 
-![alt text](image.png)
+![alt text](/screenshots/image.png)
 
 STEP - 3 : Pushing the Image to Docker Hub
 
@@ -39,7 +39,7 @@ Commands :
 docker tag ticket-system puttaumadevi/ticket-system:latest
 docker push puttaumadevi/ticket-system:latest
 (image.png)
-![alt text](dockerhub.png)
+![alt text](/screenshots/dockerhub.png)
 
 STEP - 4 : Jenkins (Continuous Integration & Delivery)
 
@@ -57,8 +57,8 @@ STEP - 4 : Jenkins (Continuous Integration & Delivery)
 
 -Pushing image to Docker Hub
 
--Deploying the container locally (8083:5000)
+-Deploying the container locally (8081:5000)
 
 -Each code push triggers an automatic CI/CD workflow.
 
-(jenkinspipeline.png)
+[!alt text](/screenshots/jenkinspipeline.png)
