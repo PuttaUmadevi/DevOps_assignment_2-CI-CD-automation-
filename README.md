@@ -61,4 +61,4 @@ STEP - 4 : Jenkins (Continuous Integration & Delivery)
 
 -Each code push triggers an automatic CI/CD workflow.
 
-[!alt text](/screenshots/jenkinspipeline.png)
+![alt text](/screenshots/jenkinspipeline.png)
